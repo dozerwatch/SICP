@@ -74,3 +74,6 @@ Then he evaluates the expression:
 2. undefined
 3. Applicative: (= 0 0) is true, so test returns the consequent expression and doesn't evaluate the alternative expression.
 Normal: The interpreter would not evaluate the if statement and will continuously sub (p) for (p).
+
+1. undefined
+2. 0
