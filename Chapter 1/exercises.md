@@ -70,10 +70,8 @@ Then he evaluates the expression:
 2. What behavior will he observe with an interpreter that uses normal-order evaluation? 
 3. Explain your answer. (Assume that the evaluation rule for the special form if is the same whether the interpreter is using normal or applicative order: The predicate expression is evaluated first, and the result determines whether to evaluate the consequent or the alternative expression.)
 ---
-1. 0
-2. undefined
-3. Applicative: (= 0 0) is true, so test returns the consequent expression and doesn't evaluate the alternative expression.
-Normal: The interpreter would not evaluate the if statement and will continuously sub (p) for (p).
-
 1. undefined
 2. 0
+3. - Applicative: Because we have to evaluate the subexpressions of the combination first, evaluating `(p)` forces us into an infinite loop.
+
+   - Normal: Substituting the operand expressions in for the formal parameters, we get an `if` case analysis. Since `(= 0 0)` returns true, we ONLY evaluate the consequent expression `0`, ignoring the infinite loop of `(p)`.
