@@ -75,3 +75,55 @@ Then he evaluates the expression:
 3. - Applicative: Because we have to evaluate the subexpressions of the combination first, evaluating `(p)` forces us into an infinite loop.
 
    - Normal: Substituting the operand expressions in for the formal parameters, we get an `if` case analysis. Since `(= 0 0)` returns true, we ONLY evaluate the consequent expression `0`, ignoring the infinite loop of `(p)`.
+
+## Exercise 1.6: 
+
+Alyssa P. Hacker doesn’t see why `if` needs to be provided as a special form. “Why can’t I just define it as an ordinary procedure in terms of cond?” she asks. Alyssa’s friend Eva Lu Ator claims this can indeed be done, and she defines a new version of `if`:
+
+```scheme
+(define (new-if predicate 
+                then-clause 
+                else-clause)
+  (cond (predicate then-clause)
+        (else else-clause)))
+```
+
+Eva demonstrates the program for Alyssa:
+
+``` scheme
+(new-if (= 2 3) 0 5)
+> 5
+
+(new-if (= 1 1) 0 5)
+> 0
+```
+
+Delighted, Alyssa uses `new-if` to rewrite the square-root program:
+
+```scheme
+(define (sqrt-iter guess x)
+  (new-if (good-enough? guess x)
+          guess
+          (sqrt-iter (improve guess x) x)))
+```
+
+What happens when Alyssa attempts to use this to compute square roots? Explain.
+
+---
+
+`new-if` is a function while `if` is a special form. This means that every subexpression in the `new-if` combination will be evaluated before `new-if` is applied, including `sqrt-iter`. This will recursively call itself with no way to stop, resulting in an infinite loop. 
+
+## Exercise 1.7
+
+The `good-enough?` test used in computing square roots will not be very effective for finding the square roots of very small numbers. 
+
+Also, in real computers, arithmetic operations are almost always performed with limited precision. This makes our test inadequate for very large numbers. 
+
+1. Explain these statements, with examples showing how the test fails for small and large numbers. 
+
+An alternative strategy for implementing `good-enough?` is to watch how guess changes from one iteration to the next and to stop when the change is a very small fraction of the guess. 
+
+2. Design a square-root procedure that uses this kind of end test. Does this work better for small and large numbers? 
+
+---
+
