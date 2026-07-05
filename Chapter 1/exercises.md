@@ -113,7 +113,7 @@ What happens when Alyssa attempts to use this to compute square roots? Explain.
 
 `new-if` is a function while `if` is a special form. This means that every subexpression in the `new-if` combination will be evaluated before `new-if` is applied, including `sqrt-iter`. This will recursively call itself with no way to stop, resulting in an infinite loop. 
 
-## Exercise 1.7
+## Exercise 1.7 **
 
 The `good-enough?` test used in computing square roots will not be very effective for finding the square roots of very small numbers. 
 
@@ -127,3 +127,46 @@ An alternative strategy for implementing `good-enough?` is to watch how guess ch
 
 ---
 
+`good-enough` is not effective for finding the square roots of very small numbers, because the absolute error tolerance of `0.001` is too large for very small numbers. Hence, `improve` doesn't run for many iterations.
+
+On the other hand, the absolute error tolerance is too small for very large number. The computer runs out of significant digits before the programs gets an error less than `0.001`. This causes all further iterations of `improve` to be the same as the last iteration, leading to an infinite loop.
+
+```scheme
+(define (good-enough? prev-guess guess)
+  (< (abs (/ (- guess prev-guess) guess)) 0.000000001))
+
+(define (sqrt-iter guess x)
+  (if (good-enough? guess (improve guess x))
+      guess
+      (sqrt-iter (improve guess x) x)))
+```
+This works better for both small and large numbers.
+
+## Exercise 1.8: 
+
+Newton’s method for cube roots is based on the fact that if $y$ is an approximation to the cube root of $x$, then a better approximation is given by the value
+
+$$ \frac{x / y^2 + 2 y}{ 3 }. $$
+
+Use this formula to implement a cube-root procedure analogous to the square-root procedure.
+
+---
+
+```scheme
+(define (improve y x)
+  (/ 3 (+ (/ x (* y y)) (* 2 y))))
+
+(define (cube x) 
+  (* x x x))
+
+(define (good-enough? prev-guess guess)
+  (< (abs (/ (- guess prev-guess) guess)) 0.000000001))
+
+(define (cube-iter guess x)
+  (if (good-enough? guess (improve guess x))
+      guess
+      (cube-iter (improve guess x) x)))
+
+(define (cube-root x)
+  (cube-iter 1.0 x))
+```
