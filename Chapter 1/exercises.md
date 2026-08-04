@@ -262,3 +262,68 @@ Give concise mathematical definitions for the functions computed by the procedur
 (define (h n) (A 2 n))   --> 2^2^...^2 n times
 (define (k n) (* 5 n n)) --> 5n^2
 ```
+
+## Exercise 1.11
+
+A function $f$ is defined by the rule that $f(n) = n$ if $n < 3$ and $f ( n ) = f ( n − 1 ) + 2 f ( n − 2 ) + 3 f ( n − 3 )$ if $n \geq 3$. Write a procedure that computes $f$ by means of a recursive process. Write a procedure that computes $f$ by means of an iterative process. 
+
+--- 
+
+```scheme
+; Generates a tree-recursive process
+
+; Assumes n is non-negative
+(define (f n)
+  (if ((< n 3) n)
+      (+ (fib (- n 1))
+         (* 2 (fib (- n 2)))
+         (* 3 (fib (- n 3))))))
+```
+
+```scheme
+; Generates a linear iteration
+
+(define (f x) 
+  (define (f-iter a b c n)
+    (cond ((= n 2) a)
+          ((= n 1) 1)
+          ((= n 0) 0)
+          (else (f-iter (+ a (* 2 b) (* 3 c)) a b (- n 1)))))
+
+  (f-iter 2 1 0 x))
+```
+
+## Exercise 1.12
+
+The following pattern of numbers is called Pascal’s triangle.
+
+             1
+           1   1
+         1   2   1
+       1   3   3   1
+     1   4   6   4   1
+           . . .
+
+The numbers at the edge of the triangle are all 1, and each number inside the triangle is the sum of the two numbers above it. Write a procedure that computes elements of Pascal’s triangle by means of a recursive process. 
+
+---
+
+```scheme
+; Gets the value at row i column j
+(define (p i j)
+  (cond ((= j 1) 1)
+        ((= i j) 1)
+        (else (+ (p (- i 1) (- j 1)) (p (- i 1) j)))))
+```
+
+
+
+## Exercise 1.13
+
+Prove that $\textrm{Fib}(n)$ is the closest integer to $$ \frac{\varphi^n}{\sqrt{5}}\textrm{, where }\varphi = \frac{1 + \sqrt{5}}{2}. $$
+
+Hint: Let $\psi = ( 1 − \sqrt{5} ) / 2$. Use induction and the definition of the Fibonacci numbers to prove that 
+$\textrm{Fib}(n)= ( \varphi^n − \psi^n ) / 5$. 
+
+---
+
